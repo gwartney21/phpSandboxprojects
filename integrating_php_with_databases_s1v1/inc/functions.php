@@ -1,4 +1,23 @@
 <?php
+
+function full_catalog_array(){
+    include("connection.php");
+
+    // Query the databae select all information from table
+
+    try{
+        $results = $dbh->query("SELECT title,img, category FROM Media");
+    }catch (Exception $e){
+        echo 'unable to retreive data';
+        exit;
+    }
+
+    
+    $catalog = $results->fetchAll();
+    
+    return $catalog;
+}
+
 function get_item_html($id,$item) {
     $output = "<li><a href='details.php?id="
         . $id . "'><img src='" 
