@@ -6,7 +6,7 @@ function full_catalog_array(){
     // Query the databae select all information from table
 
     try{
-        $results = $dbh->query("SELECT title,img, category FROM Media");
+        $results = $dbh->query("SELECT media_id,title,img, category FROM Media");
     }catch (Exception $e){
         echo 'unable to retreive data';
         exit;
@@ -18,9 +18,39 @@ function full_catalog_array(){
     return $catalog;
 }
 
+function single_item_array($id){
+    include("connection.php");
+
+    // Query the databae select all information from table
+
+    try{
+        $results = $dbh->prepare("SELECT title,img,format,year, 
+        genre, publisher, isbn
+        FROM Media
+        JOIN Genres ON Media.genre_id = Genres.genre_id
+        LEFT OUTER JOIN Books ON Media.media_id = Books.media_id
+        WHERE Media.media_id = ? "
+        
+    );
+
+    $results->bindParam(1,$id,PDO::PARAM_INT);
+    $results->execute();
+
+    }catch (Exception $e){
+        echo 'unable to retreive data';
+        exit;
+    }
+
+    
+    $catalog = $results->fetch();
+    return $catalog;
+}
+
+
+
 function get_item_html($id,$item) {
     $output = "<li><a href='details.php?id="
-        . $id . "'><img src='" 
+        . $item["media_id"] . "'><img src='" 
         . $item["img"] . "' alt='" 
         . $item["title"] . "' />" 
         . "<p>View Details</p>"
