@@ -1,54 +1,126 @@
 <?php
-
-function full_catalog_array(){
+function full_catalog_array() {
     include("connection.php");
 
-    // Query the databae select all information from table
+    try {
+       $results = $db->query("SELECT media_id, title, category,img FROM Media
+       ORDER BY 
+         REPLACE(
+           REPLACE(
+              REPLACE(title,'The ',''),
+              'An ',
+              ''
+           ),
+           'A ',
+           ''
+         )");
+    } catch (Exception $e) {
+       echo "Unable to retrieved results";
+       exit;
+    }
+    
+    $item = $results->fetchAll();
+    if(empty($item)) return $item;
+    return $item;
+}
 
-    try{
-        $results = $dbh->query("SELECT media_id,title,img, category FROM Media");
-    }catch (Exception $e){
-        echo 'unable to retreive data';
-        exit;
+
+function category_catalog_array($category) {
+    include("connection.php");
+    $category = strtolower($category);
+    try {
+       $results = $db->prepare(
+         "SELECT media_id, title, category,img 
+         FROM Media
+         WHERE LOWER(category) = ?
+         ORDER BY 
+         REPLACE(
+           REPLACE(
+              REPLACE(title,'The ',''),
+              'An ',
+              ''
+           ),
+           'A ',
+           ''
+         )"
+       );
+       $results->bindParam(1,$category,PDO::PARAM_STR);
+       $results->execute();
+    } catch (Exception $e) {
+       echo "Unable to retrieved results";
+       exit;
     }
 
-    
     $catalog = $results->fetchAll();
-    
     return $catalog;
 }
 
-function single_item_array($id){
+
+
+function random_catalog_array() {
     include("connection.php");
 
-    // Query the databae select all information from table
-
-    try{
-        $results = $dbh->prepare("SELECT title,img,format,year, 
-        genre, publisher, isbn
-        FROM Media
-        JOIN Genres ON Media.genre_id = Genres.genre_id
-        LEFT OUTER JOIN Books ON Media.media_id = Books.media_id
-        WHERE Media.media_id = ? "
-        
-    );
-
-    $results->bindParam(1,$id,PDO::PARAM_INT);
-    $results->execute();
-
-    }catch (Exception $e){
-        echo 'unable to retreive data';
-        exit;
+    try {
+       $results = $db->query("
+       SELECT media_id, title, category,img 
+       FROM Media
+       ORDER BY RANDOM()
+       LIMIT 4");
+    } catch (Exception $e) {
+       echo "Unable to retrieved results";
+       exit;
     }
-
     
-    $catalog = $results->fetch();
-    return $catalog;
+    $item = $results->fetchAll();
+    if(empty($item)) return $item;
+    return $item;
 }
 
 
+function single_item_array($id) {
+    include("connection.php");
 
-function get_item_html($id,$item) {
+    try {
+       $results = $db->prepare(
+         "SELECT Media.media_id, title, category,img, format, year, genre 
+         FROM Media
+         JOIN Genres ON Media.genre_id = Genres.genre_id
+         LEFT OUTER JOIN Books 
+         ON Media.media_id = Books.media_id
+         WHERE Media.media_id = ?"
+       );
+       $results->bindParam(1,$id,PDO::PARAM_INT);
+       $results->execute();
+    } catch (Exception $e) {
+       echo "Unable to retrieved results";
+       exit;
+    }
+    
+    //Get the main details of the data
+    $item = $results->fetch();
+    if(empty($item))return $item;
+    try {
+       $results = $db->prepare("
+         SELECT fullname,role
+              FROM Media_People
+              JOIN People ON Media_People.people_id=People.people_id
+              WHERE media_id = ?");
+       $results->bindParam(1,$id,PDO::PARAM_INT);
+       $results->execute();
+    } catch (Exception $e) {
+       echo "Unable to retrieved results";
+       exit;
+    }
+    
+    while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
+    
+        $item[$row["role"]][] = $row["fullname"];
+        var_dump($item);
+    }
+  
+    return $item;
+}
+function get_item_html($item) {
     $output = "<li><a href='details.php?id="
         . $item["media_id"] . "'><img src='" 
         . $item["img"] . "' alt='" 

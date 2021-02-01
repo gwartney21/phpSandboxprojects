@@ -1,4 +1,4 @@
-
+CREATE DATABASE IF NOT EXISTS `database` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `database`;
 
 DROP TABLE IF EXISTS `People`;
