@@ -3,6 +3,7 @@ function full_catalog_array() {
     include("connection.php");
 
     try {
+<<<<<<< Updated upstream
        $results = $db->query("SELECT media_id, title, category,img FROM Media
        ORDER BY 
          REPLACE(
@@ -45,11 +46,14 @@ function category_catalog_array($category) {
          )"
        );
        $results->bindParam(1,$category,PDO::PARAM_STR);
-       $results->execute();
+
+       $results = $db->query("SELECT media_id, title, category,img FROM Media");
+
     } catch (Exception $e) {
        echo "Unable to retrieved results";
        exit;
     }
+
 
     $catalog = $results->fetchAll();
     return $catalog;
@@ -66,6 +70,26 @@ function random_catalog_array() {
        FROM Media
        ORDER BY RANDOM()
        LIMIT 4");
+
+    
+    $catalog = $results->fetchAll();
+    return $catalog;
+}
+function single_item_array($id) {
+    include("connection.php");
+
+    try {
+       $results = $db->prepare(
+         "SELECT Media.media_id, title, category,img, format, year, genre 
+         FROM Media
+         JOIN Genres ON Media.genre_id = Genres.genre_id
+         LEFT OUTER JOIN Books 
+         ON Media.media_id = Books.media_id
+         WHERE Media.media_id = ?"
+       );
+       $results->bindParam(1,$id,PDO::PARAM_INT);
+       $results->execute();
+
     } catch (Exception $e) {
        echo "Unable to retrieved results";
        exit;
