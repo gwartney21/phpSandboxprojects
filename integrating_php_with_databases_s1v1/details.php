@@ -1,4 +1,6 @@
 <?php 
+
+//testing update for git commit
 include("inc/functions.php");
 
 if (isset($_GET["id"])) {
