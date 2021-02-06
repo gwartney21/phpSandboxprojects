@@ -3,6 +3,7 @@ include("inc/functions.php");
 
 $pageTitle = "Full Catalog";
 $section = null;
+$search = null;
 $items_per_page = 8;
 
 if (isset($_GET["cat"])) {
