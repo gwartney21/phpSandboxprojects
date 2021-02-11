@@ -7,4 +7,19 @@ echo '<p><a class="btn btn-default btn-lg" href="play.php" role="button">Play</a
 
 echo '<h2>Reread Your Saved Stories</h2>';
 
+
+if(isset($_COOKIE)){
+    foreach($_COOKIE as $key => $value){
+        if($key !='PHPSESSID'){
+            echo '<div class="form-group">';
+            echo '<a class="bt btn-info" href="inc/cookie.php?read='
+                . urlencode($key) . '">';
+            echo substr($key, 0, -10);
+            
+            echo '</a>'
+            echo '</div>';
+        }
+       
+    }
+}
 include 'inc/footer.php';
