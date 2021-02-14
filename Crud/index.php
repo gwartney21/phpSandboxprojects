@@ -18,7 +18,7 @@ include 'inc/header.php';
               <span class="actions-icon">
                 <svg viewbox="0 0 64 64"><use xlink:href="#task_icon"></use></svg>
               </span>
-              Add Task
+                Add Task
             </a>
           </li>
           <li class="actions-item">
