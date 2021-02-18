@@ -3,6 +3,11 @@ require 'inc/functions.php';
 
 $page = "reports";
 $pageTitle = "Reports | Time Tracker";
+$filter = 'all';
+
+if (!empty($_GET['filter'])) {
+    $filter = explode(':',filter_input(INPUT_GET, 'filter', FILTER_SANITIZE_STRING));
+}
 
 include 'inc/header.php';
 ?>
@@ -10,20 +15,52 @@ include 'inc/header.php';
     <div class="col col-70-md col-60-lg col-center">
         <div class="col-container">
             <h1 class='actions-header'>Reports</h1>
+            <form class='form-container form-report' action='reports.php' method='get'>
+                <label for='filter'>Filter:</label>
+                <select id='filter' name='filter'>
+                    <option value=''>Select One</option>
+                    <?php
+                    foreach (get_project_list() as $item) {
+                        echo '<option value="project:' . $item['project_id'] . '">';
+                        echo $item['title'] . "</option>\n";
+                    }
+                    ?>
+                </select>
+                <input class="button" type="submit" value="Run" />
+            </form>
         </div>
         <div class="section page">
             <div class="wrapper">
                 <table>
-
                     <?php
-                        $total = 0;
-                        foreach(get_task_list() as $item){
-                            $total += $item['time'];
-                            echo "<td>" . $item['title'] . "</td>\n";
-                            echo "<td>" . $item['date'] . "</td>\n";
-                            echo "<td>" . $item['time'] . "</td>\n";
+                    $total = $project_id = $project_total = 0;
+                    $tasks = get_task_list($filter);
+                    foreach ($tasks as $item) {
+                        if ($project_id != $item['project_id']) {
+                            $project_id = $item['project_id'];
+                            echo "<thead>\n";
+                            echo "<tr>\n";
+                            echo "<th>" . $item['project'] . "</th>\n";
+                            echo "<th>Date</th>\n";
+                            echo "<th>Time</th>\n";
                             echo "</tr>\n";
+                            echo "</thead>\n";
                         }
+                        $project_total += $item['time'];
+                        $total += $item['time'];
+                        echo "<tr>\n";
+                        echo "<td>". $item['title'] . "</td>\n";
+                        echo "<td>". $item['date'] . "</td>\n";
+                        echo "<td>". $item['time'] . "</td>\n";
+                        echo "</tr>\n";
+                        if (next($tasks)['project_id'] != $item['project_id']) {
+                            echo "<tr>\n";
+                            echo "<th class='project-total-label' colspan='2'>Project Total</th>\n";
+                            echo "<th class='project-total-number'>$project_total</th>\n";
+                            echo "</tr>\n";
+                            $project_total = 0;
+                        }
+                    }
                     ?>
                     <tr>
                         <th class='grand-total-label' colspan='2'>Grand Total</th>
