@@ -51,6 +51,7 @@ include 'inc/header.php';
                         <option value="category:Personal">Personal</option>
                     </optgroup>
                     <optgroup label="Date">
+<<<<<<< Updated upstream
                         <option value="date:<?php
                         echo date('m/d/y', strtotime('-2 Sunday'));
                         echo ":";
@@ -72,6 +73,28 @@ include 'inc/header.php';
                         echo date('m/d/y');
                         ?>">This Month</option>
                         
+=======
+                        <option value="date:<?php 
+                            echo date('m/d/y', strtotime('-2 Sunday'));
+                            echo ":";
+                            echo date('m/d/y', strtotime('-1 Saturday'));
+                        ?>">Last Week</option>
+                        <option value="date:<?php 
+                            echo date('m/d/y', strtotime('-2 Sunday'));
+                            echo ":";
+                            echo date('m/d/y', strtotime('-1 Saturday'));
+                        ?>">This Week</option>
+                        <option value="date:<?php 
+                            echo date('m/d/y', strtotime('-2 Sunday'));
+                            echo ":";
+                            echo date('m/d/y', strtotime('-1 Saturday'));
+                        ?>">Last Week</option>
+                        <option value="date:<?php 
+                            echo date('m/d/y', strtotime('-2 Sunday'));
+                            echo ":";
+                            echo date('m/d/y', strtotime('-1 Saturday'));
+                        ?>">Last Week</option>
+>>>>>>> Stashed changes
                     </optgroup>
                 </select>
                 <input class="button" type="submit" value="Run" />
