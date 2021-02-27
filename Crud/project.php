@@ -73,9 +73,9 @@ include 'inc/header.php';
                     </tr>
                 </table>
                 <?php
-                if(!empty($project_id)){
-                    echo '<input type="hidden" name="id" value="'.$project_id . '"/>';
-                }
+                    if(!empty($project_id)) {
+                    echo '<input type="hidden" name="id" value"' . $project_id . '" />';                    
+                    }
                 ?>
                 <input class="button button--primary button--topic-php" type="submit" value="Submit" />
             </form>
