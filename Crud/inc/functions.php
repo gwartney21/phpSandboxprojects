@@ -54,22 +54,15 @@ function get_task_list($filter = null) {
     return $results->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function add_project($title, $category,$project_id = null){
+function add_project($title, $category,){
     include 'connection.php';
     
-    if($project_id){
-        $sql = 'UPDATE projects SET title = ?, category = ? WHERE project_id = ?';
-    }else{
-        $sql = 'INSERT INTO projects(title, category) VALUES(?, ?)';
-    }
+    $sql = 'INSERT INTO projects(title, category) VALUES(?, ?)';
     
     try {
         $results = $db->prepare($sql);
         $results->bindValue(1, $title, PDO::PARAM_STR);
         $results->bindValue(2, $category, PDO::PARAM_STR);
-        if($project_id){
-            $results->bindValue(3, $project_id, PDO::PARAM_INT);
-        }
         $results->execute();
     } catch (Exception $e) {
         echo "Error!: " . $e->getMessage() . "<br />";
@@ -110,6 +103,7 @@ function get_task($task_id){
     return $results->fetch();
 }
 
+<<<<<<< Updated upstream
 function delete_task($task_id){
     include 'connection.php';
     
@@ -138,6 +132,16 @@ function add_task($project_id, $title, $date, $time,$task_id = null){
         $sql = 'INSERT INTO tasks(project_id, title, date, time) VALUES(?, ?, ?, ?)';
     }
 
+=======
+function add_task($project_id, $title, $date, $time, $task_id = null){
+    include 'connection.php';
+    
+    if($task_id){
+        $sql ='UPDATE '
+    }
+    
+    $sql = 'INSERT INTO tasks(project_id, title, date, time) VALUES(?, ?, ?, ?)';
+>>>>>>> Stashed changes
     
     try {
         $results = $db->prepare($sql);
