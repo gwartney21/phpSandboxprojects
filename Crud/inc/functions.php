@@ -103,7 +103,6 @@ function get_task($task_id){
     return $results->fetch();
 }
 
-<<<<<<< Updated upstream
 function delete_task($task_id){
     include 'connection.php';
     
@@ -132,16 +131,6 @@ function add_task($project_id, $title, $date, $time,$task_id = null){
         $sql = 'INSERT INTO tasks(project_id, title, date, time) VALUES(?, ?, ?, ?)';
     }
 
-=======
-function add_task($project_id, $title, $date, $time, $task_id = null){
-    include 'connection.php';
-    
-    if($task_id){
-        $sql ='UPDATE '
-    }
-    
-    $sql = 'INSERT INTO tasks(project_id, title, date, time) VALUES(?, ?, ?, ?)';
->>>>>>> Stashed changes
     
     try {
         $results = $db->prepare($sql);
