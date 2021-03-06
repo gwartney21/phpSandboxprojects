@@ -1,25 +1,26 @@
 <?php
-   
 
-    function readFolderFiles($dir){
+function readFolderFiles($dir){
 
-    $files = scandir($dir);   
+$files = scandir('data');
+
 
     echo '<ul>';
-    foreach($files as $file){
-
-        if(substr($file,0,1)!='.'){
+    foreach ($files as $file) {
+        if(substr($file, 0,1)!='.'){
             echo '<li>';
-            if(is_dir($dir. '/' . $file)){
+            if(is_dir($dir . '/' . $file)){
                 echo $file;
-                readFolderFiles($dir . '/' . $file );
+                readFolderFiles($dir . '/' . $file);
             }else{
-                echo '<a href="' . $dir . '/' . $file . '">' . $file . '</a>';
+                echo '<a href="' . $dir . '/' . $file . '">' . $file. '</a>';
+                echo '</li>';
             }
-            echo '</li>';
         }
     }
     echo '</ul>';
+    
 
 }
-?>
+
+readFolderFiles('data');
