@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 class Recipe
 {
     private $title;
@@ -20,7 +21,16 @@ class Recipe
         "gallon"
     );
     
-
+    public function setTitle($title)
+    {
+        $this->title = ucwords($title);
+    }
+    
+    public function getTitle()
+    {
+        return $this->title;
+    }
+    
     public function addIngredient($item, $amount = null, $measure = null)
     {
         if ($amount != null && !is_float($amount) && !is_int($amount)) {
@@ -41,49 +51,9 @@ class Recipe
         return $this->ingredients;
     }
     
-         
-    public function addInstruction($string)
+    public function displayRecipe()
     {
-        $this->instructions[] = $string;
+        return $this->title . " by " . $this->source;
     }
-
-    public function setTitle($title){
-
-        $this->title = ucwords($title);
-    }
-
-    public function addTag(){
-        $this->tags[] =  strtolower($tag);
-    }
-    
-    public function getTags(){
-        return $this->tags;
-    }
-
-    public function setYield($yield){
-        $this->yield = $yield;
-    }
-    
-    public function getYiled(){
-        return $this->yield;
-    }
-    public function setSource($source){
-        return $this->yield = $source;
-    }
-
-    public function getSource(){
-        $this->source = ucwords($source);
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    public function getInstructions()
-    {
-        return $this->instructions;
-    }
-
 }
 
