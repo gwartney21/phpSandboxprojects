@@ -20,6 +20,10 @@ class Recipe
         "gallon"
     );
     
+    public function __construct($title = null){
+        $this->setTitle($title);
+
+    }
 
     public function addIngredient($item, $amount = null, $measure = null)
     {
@@ -49,7 +53,11 @@ class Recipe
 
     public function setTitle($title){
 
-        $this->title = ucwords($title);
+        if(empty($title)){
+            $this->title =null;
+        }else{
+            $this->title = ucwords($title);
+        }
     }
 
     public function addTag(){

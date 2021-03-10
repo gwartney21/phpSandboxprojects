@@ -3,14 +3,19 @@
 
 =======
    
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 function readFolderFiles($dir){
 
 $files = scandir('data');
+=======
+function readFolderFiles($dir){
+>>>>>>> Stashed changes
 
 
 <<<<<<< Updated upstream
     echo '<ul>';
+<<<<<<< Updated upstream
     foreach ($files as $file) {
         if(substr($file, 0,1)!='.'){
             echo '<li>';
@@ -26,13 +31,24 @@ $files = scandir('data');
 =======
  
 >>>>>>> Stashed changes
+=======
+    foreach($files as $file){
+
+ 
+>>>>>>> Stashed changes
     echo '</ul>';
     
 
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 readFolderFiles('data');
+=======
+readFolderFiles('html');
+
+?>
+>>>>>>> Stashed changes
 =======
 readFolderFiles('html');
 
